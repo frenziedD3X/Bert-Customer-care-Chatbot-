@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chat {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        #user-input {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat"></div>
+    <div id="user-input">
+        <input type="text" id="message" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+async function sendMessage() {
+    const messageInput = document.getElementById('message');
+    const message = messageInput.value.trim();
+
+    if (!message) {
+        return; // Do not send empty messages
+    }
+
+    // Display user's message
+    const chatDiv = document.getElementById('chat');
+    chatDiv.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+    messageInput.value = '';
+
+    // Disable the button
+    const sendButton = document.querySelector('button');
+    sendButton.disabled = true;
+
+    try {
+        // Send message to the Node.js server
+        const response = await fetch('http://localhost:5000/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        // Display chatbot's response
+        chatDiv.innerHTML += `<p><strong>Chatbot:</strong> ${data.response}</p>`;
+    } catch (error) {
+        console.error('Error:', error);
+        chatDiv.innerHTML += `<p><strong>Chatbot:</strong> Sorry, I couldn’t understand that.</p>`;
+    } finally {
+        // Re-enable the button
+        sendButton.disabled = false;
+        chatDiv.scrollTop = chatDiv.scrollHeight; // Scroll to the bottom
+    }
+}
+
+    </script>
+</body>
+</html>
