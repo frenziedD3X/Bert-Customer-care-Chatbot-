@@ -69,7 +69,7 @@ pip install -r requirements.txt
 Navigate to the Node.js backend directory:
 
 ```bash
-cd node-backend
+cd chatbot-backend
 ```
 
 Install the required Node.js packages:
