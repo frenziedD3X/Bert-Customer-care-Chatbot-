@@ -1,6 +1,3 @@
-Here’s the `README.md` content formatted as it would appear in a Markdown file:
-
-```markdown
 # Customer Care Chatbot
 
 Welcome to the Customer Care Chatbot project! This chatbot is designed to assist users by answering queries related to UpToSkills. It leverages a combination of Python, Flask, Node.js, and a DistilBERT model for natural language processing.
@@ -101,5 +98,3 @@ Contributions are welcome! If you have suggestions or improvements, feel free to
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 ```
-
-You can copy and paste this directly into your `README.md` file! Let me know if you need any further adjustments.
