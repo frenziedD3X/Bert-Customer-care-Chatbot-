@@ -1,3 +1,6 @@
+Here is the edited `README.md` file for your customer care chatbot project:
+
+```markdown
 # Customer Care Chatbot
 
 Welcome to the Customer Care Chatbot project! This chatbot is designed to assist users by answering queries related to UpToSkills. It leverages a combination of Python, Flask, Node.js, and a DistilBERT model for natural language processing.
@@ -8,6 +11,7 @@ Welcome to the Customer Care Chatbot project! This chatbot is designed to assist
 - [Installation](#installation)
 - [Running the Project](#running-the-project)
 - [Usage](#usage)
+- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -78,6 +82,10 @@ Install the required Node.js packages:
 npm install
 ```
 
+### Model Setup
+
+Ensure you have the DistilBERT model and tokenizer available in the `customer_care_bert_model/` and `customer_care_bert_tokenizer/` directories, respectively. If they are not available, refer to the model download steps, or reach out to the project administrator for access.
+
 ## Running the Project
 
 To run the project, execute the following command in the root directory:
@@ -86,9 +94,48 @@ To run the project, execute the following command in the root directory:
 python run.py
 ```
 
+### Running the Node.js Server
+
+In the `node-backend` directory, run the following command to start the Node.js server:
+
+```bash
+node server.js
+```
+
+Ensure both the Flask API and the Node.js server are running before accessing the frontend.
+
 ## Usage
 
 Once the server is running, you can access the chatbot through the frontend. Simply open `index.html` in your web browser to start interacting with the chatbot.
+
+## Troubleshooting
+
+### Cloning with Git LFS
+
+If the repository contains large files stored via Git LFS, make sure to install Git LFS and pull the files correctly:
+
+1. Install Git LFS:
+
+   ```bash
+   git lfs install
+   ```
+
+2. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   ```
+
+3. Pull LFS files:
+
+   ```bash
+   git lfs pull
+   ```
+
+### Common Issues
+
+- **Python Version Mismatch:** Ensure you’re using the correct version of Python (e.g., Python 3.12 or above). If the project uses a newer Python version, upgrade your local Python environment.
+- **Missing Dependencies:** Double-check that you’ve installed all required Python and Node.js dependencies using `pip install -r requirements.txt` and `npm install`.
 
 ## Contributing
 
