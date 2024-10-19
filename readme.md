@@ -120,7 +120,7 @@ If the repository contains large files stored via Git LFS, make sure to install 
 2. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/frenziedD3X/Bert-Customer-care-Chatbot-.git
    ```
 
 3. Pull LFS files:
