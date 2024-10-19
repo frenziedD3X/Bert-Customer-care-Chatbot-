@@ -402,6 +402,259 @@
       "responses": [
         "For information about free internships, please visit our website. We have a dedicated section that outlines all the available internships, including requirements and how to apply."
       ]
+    },
+    {
+      "tag": "contact_support",
+      "patterns": [
+        "How can I contact support?",
+        "I need help with something.",
+        "Who do I reach out to for assistance?"
+      ],
+      "responses": [
+        "You can contact our support team by emailing support@uptoskills.com or calling our helpline at [phone number]. We’re here to help!"
+      ]
+    },
+    {
+      "tag": "schedule_consultation",
+      "patterns": [
+        "Can I schedule a consultation?",
+        "I want to book a meeting with an advisor.",
+        "How do I set up a consultation?"
+      ],
+      "responses": [
+        "To schedule a consultation, please visit our website's consultation page or call us at [phone number]. We'll be happy to assist you!"
+      ]
+    },
+    {
+      "tag": "event_registration",
+      "patterns": [
+        "How do I register for an event?",
+        "I want to sign up for the upcoming webinar.",
+        "Where can I find the registration link?"
+      ],
+      "responses": [
+        "You can register for events by visiting our events page at [link]. Find the event you're interested in, and click on the registration link."
+      ]
+    },
+    {
+      "tag": "scholarship_inquiry",
+      "patterns": [
+        "Are there any scholarships available?",
+        "How can I apply for a scholarship?",
+        "What scholarships does UpToSkills offer?"
+      ],
+      "responses": [
+        "We offer various scholarships based on eligibility. Please check our scholarships page at [link] for more information and the application process."
+      ]
+    },
+    {
+      "tag": "learning_materials",
+      "patterns": [
+        "Can I download learning materials?",
+        "Where can I find study resources?",
+        "Do you provide any materials for the courses?"
+      ],
+      "responses": [
+        "Yes, you can download learning materials from the course section of our website. Look for the resources tab in your course dashboard."
+      ]
+    },
+    {
+      "tag": "exam_schedules",
+      "patterns": [
+        "What are the exam dates?",
+        "When is the next certification test?",
+        "Can you provide the exam schedule?"
+      ],
+      "responses": [
+        "The exam schedules can be found on our certification page at [link]. Please check there for the latest updates on exam dates."
+      ]
+    },
+    {
+      "tag": "feedback_submission",
+      "patterns": [
+        "How can I give feedback?",
+        "I have some suggestions for improvement.",
+        "Where do I submit my feedback?"
+      ],
+      "responses": [
+        "We appreciate your feedback! You can submit it through our feedback form on the website or directly at feedback@uptoskills.com."
+      ]
+    },
+    {
+      "tag": "course_duration",
+      "patterns": [
+        "How long is the course?",
+        "What is the duration of this program?",
+        "Can you tell me how many weeks the course lasts?"
+      ],
+      "responses": [
+        "The duration of our courses varies. You can find specific course durations listed on the course detail pages."
+      ]
+    },
+    {
+      "tag": "course_requirements",
+      "patterns": [
+        "What are the prerequisites for this course?",
+        "Do I need any prior knowledge for the course?",
+        "Are there any requirements before I enroll?"
+      ],
+      "responses": [
+        "Each course has its own prerequisites listed on the course page. Please check there for more details."
+      ]
+    },
+    {
+      "tag": "job_assistance",
+      "patterns": [
+        "Do you offer job placement assistance?",
+        "How can I get help with job placement?",
+        "What career support services do you provide?"
+      ],
+      "responses": [
+        "Yes, we provide job placement assistance for our graduates. Please visit our career support page for more information."
+      ]
+    },
+    {
+      "tag": "resume_help",
+      "patterns": [
+        "Can you help me with my resume?",
+        "Do you provide resume-building services?",
+        "How can I improve my resume?"
+      ],
+      "responses": [
+        "We offer resume-building workshops and resources. Check our career services page for details on upcoming sessions."
+      ]
+    },
+    {
+      "tag": "tech_issue",
+      "patterns": [
+        "I'm having a technical issue.",
+        "The website isn't working properly.",
+        "Who do I contact for tech support?"
+      ],
+      "responses": [
+        "For technical issues, please reach out to our support team at support@uptoskills.com, and we'll assist you promptly."
+      ]
+    },
+    {
+      "tag": "training_partners",
+      "patterns": [
+        "Who are your training partners?",
+        "Do you collaborate with any organizations?",
+        "Can you tell me about your industry partners?"
+      ],
+      "responses": [
+        "We partner with various organizations to enhance our training programs. You can find more information on our partnerships page."
+      ]
+    },
+    {
+      "tag": "course_reviews",
+      "patterns": [
+        "Can I see reviews for the courses?",
+        "What do other students say about this course?",
+        "Are there any testimonials available?"
+      ],
+      "responses": [
+        "You can find student reviews and testimonials on the course detail pages. We encourage you to read them!"
+      ]
+    },
+    {
+      "tag": "career_paths",
+      "patterns": [
+        "What career paths can I pursue?",
+        "How do your courses align with careers?",
+        "Can you suggest a career based on my interests?"
+      ],
+      "responses": [
+        "Our courses are designed to prepare you for various career paths. Check our career guidance page for more insights."
+      ]
+    },
+    {
+      "tag": "mentorship_programs",
+      "patterns": [
+        "Do you have mentorship programs?",
+        "How can I find a mentor?",
+        "Can I be a part of a mentorship program?"
+      ],
+      "responses": [
+        "Yes, we offer mentorship programs. Please visit our mentorship page to learn how to get involved."
+      ]
+    },
+    {
+      "tag": "upcoming_courses",
+      "patterns": [
+        "What are the new courses being offered?",
+        "Are there any upcoming courses I can enroll in?",
+        "How can I find out about new courses?"
+      ],
+      "responses": [
+        "You can find our upcoming courses listed on the courses page. Stay updated on new offerings there!"
+      ]
+    },
+    {
+      "tag": "language_support",
+      "patterns": [
+        "Do you offer courses in other languages?",
+        "Can I take the courses in my language?",
+        "What language options are available?"
+      ],
+      "responses": [
+        "We offer courses in multiple languages. Please check the course details for available language options."
+      ]
+    },
+    {
+      "tag": "certification_renewal",
+      "patterns": [
+        "How do I renew my certification?",
+        "Is there a process for certification renewal?",
+        "What are the requirements for renewing my certification?"
+      ],
+      "responses": [
+        "To renew your certification, please visit our certification renewal page for detailed steps and requirements."
+      ]
+    },
+    {
+      "tag": "virtual_tour",
+      "patterns": [
+        "Can I take a virtual tour of your facilities?",
+        "Do you offer a virtual tour option?",
+        "How can I see your campus online?"
+      ],
+      "responses": [
+        "Yes, we offer virtual tours! You can explore our facilities by visiting the virtual tour page on our website."
+      ]
+    },
+    {
+      "tag": "industry_partnerships",
+      "patterns": [
+        "Who are your industry partners?",
+        "How do partnerships enhance your programs?",
+        "Can you tell me about the companies you work with?"
+      ],
+      "responses": [
+        "We collaborate with various industry leaders to provide relevant training. You can learn more about our partnerships on our website."
+      ]
+    },
+    {
+      "tag": "payment_plans",
+      "patterns": [
+        "Do you offer payment plans?",
+        "How can I set up a payment plan for my course?",
+        "Are there installment options available?"
+      ],
+      "responses": [
+        "Yes, we offer flexible payment plans for our courses. Please check our payment options page for details."
+      ]
+    },
+    {
+      "tag": "self_paced_courses",
+      "patterns": [
+        "Do you have self-paced courses?",
+        "Can I take courses at my own pace?",
+        "How do self-paced courses work?"
+      ],
+      "responses": [
+        "Yes, we offer self-paced courses that you can complete at your convenience. Check our course catalog for available options."
+      ]
     }
   ]
 }
