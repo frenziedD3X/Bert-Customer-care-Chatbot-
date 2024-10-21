@@ -2,10 +2,8 @@ import os
 import json
 import torch
 import numpy as np
-from torch.utils.data import Dataset, DataLoader
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
-from torch.optim import AdamW
-
+from torch.utils.data import Dataset, DataLoader, random_split
+from sentence_transformers import SentenceTransformer, util
 
 # Load intents data from the database.json file
 with open('database.json', 'r') as f:
@@ -20,88 +18,102 @@ for intent in intents['intents']:
     for pattern in intent['patterns']:
         xy.append((pattern, tag))
 
-# Initialize DistilBERT tokenizer
-tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+# Initialize SBERT model (Sentence-BERT)
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-# Tokenize the patterns (inputs) and encode them for BERT
+# Get all patterns and their corresponding tags
 all_patterns = [pattern for pattern, _ in xy]
-inputs = tokenizer(all_patterns, padding=True, truncation=True, return_tensors="pt")
-
-# Create labels (tags) by mapping each tag to a numerical index
 all_tags = [tags.index(tag) for _, tag in xy]
-labels = torch.tensor(all_tags)
 
-# Dataset class for loading data into DataLoader
+# Precompute embeddings for all patterns
+pattern_embeddings = model.encode(all_patterns, convert_to_tensor=True)
+
+# Create a dataset class for SBERT
 class ChatDataset(Dataset):
-    def __init__(self, encodings, labels):
-        self.encodings = encodings
-        self.labels = labels
+    def __init__(self, patterns, tags):
+        self.patterns = patterns
+        self.tags = tags
 
     def __getitem__(self, idx):
-        item = {key: val[idx].clone().detach() for key, val in self.encodings.items()}
-        item['labels'] = self.labels[idx].clone().detach()
-        return item
+        return self.patterns[idx], self.tags[idx]
 
     def __len__(self):
-        return len(self.labels)
+        return len(self.tags)
 
+# Create a dataset
+dataset = ChatDataset(all_patterns, all_tags)
 
-# Create a dataset and a data loader
-dataset = ChatDataset(inputs, labels)
-train_loader = DataLoader(dataset, batch_size=8, shuffle=True)
+# Split dataset into training and validation sets
+train_size = int(0.8 * len(dataset))
+val_size = len(dataset) - train_size
+train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-# Set up device (use GPU if available)
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# DataLoader for batching (use batch_size=1 for embedding comparison)
+train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
 
-# Load the DistilBERT model for sequence classification
-model = DistilBertForSequenceClassification.from_pretrained(
-    'distilbert-base-uncased',
-    num_labels=len(tags)
-).to(device)
-
-# Define the optimizer
-optimizer = AdamW(model.parameters(), lr=1e-5)
-
-# Number of epochs for training
+# Training loop for SBERT (no traditional fine-tuning, just embedding comparison)
 num_epochs = 20
+best_val_loss = float('inf')
+
+# Define loss function for cosine similarity
+def cosine_loss(embeddings, target_idx):
+    cosine_scores = util.cos_sim(embeddings, pattern_embeddings)
+    predicted_idx = torch.argmax(cosine_scores, dim=1).item()
+    return 1.0 - cosine_scores[0][target_idx].item(), predicted_idx
 
 # Training loop
 for epoch in range(num_epochs):
+    model.train()  # SBERT doesn't require typical fine-tuning
+
     epoch_loss = 0.0
-    all_labels = []
-    all_predicted = []
+    correct = 0
+    total = 0
 
-    model.train()  # Set model to training mode
-    for batch in train_loader:
-        # Move data to the device (GPU or CPU)
-        input_ids = batch['input_ids'].to(device)
-        attention_mask = batch['attention_mask'].to(device)
-        labels = batch['labels'].to(device)
+    for pattern, target_idx in train_loader:
+        # Compute embeddings for the current pattern (from DataLoader)
+        pattern_embedding = model.encode(pattern[0], convert_to_tensor=True)
 
-        # Forward pass
-        outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
-        loss = outputs.loss
-        logits = outputs.logits
+        # Compute loss (1 - cosine similarity between predicted and target)
+        loss, predicted_idx = cosine_loss(pattern_embedding, target_idx.item())
 
-        # Backward pass and optimization
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+        # Update loss and accuracy metrics
+        epoch_loss += loss
+        if predicted_idx == target_idx:
+            correct += 1
+        total += 1
 
-        # Accumulate loss and predictions for accuracy
-        epoch_loss += loss.item()
-        _, predicted = torch.max(logits, dim=1)
-        all_labels.extend(labels.cpu().numpy())
-        all_predicted.extend(predicted.cpu().numpy())
-
-    # Calculate average loss and accuracy for the epoch
     avg_epoch_loss = epoch_loss / len(train_loader)
-    accuracy = np.mean(np.array(all_labels) == np.array(all_predicted))
+    accuracy = correct / total
 
-    print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {avg_epoch_loss:.4f}, Accuracy: {accuracy:.4f}')
+    # Validation phase
+    model.eval()
+    val_loss = 0.0
+    val_correct = 0
+    val_total = 0
 
-# Save the model and tokenizer for later use
-model.save_pretrained("customer_care_bert_model")
-tokenizer.save_pretrained("customer_care_bert_tokenizer")
+    with torch.no_grad():
+        for pattern, target_idx in val_loader:
+            # Compute embeddings for the current validation pattern
+            pattern_embedding = model.encode(pattern[0], convert_to_tensor=True)
 
-print("Training complete. Model and tokenizer saved.")
+            # Compute loss and predicted index
+            loss, predicted_idx = cosine_loss(pattern_embedding, target_idx.item())
+            val_loss += loss
+
+            if predicted_idx == target_idx:
+                val_correct += 1
+            val_total += 1
+
+    avg_val_loss = val_loss / len(val_loader)
+    val_accuracy = val_correct / val_total
+
+    # Save the best model based on validation loss
+    if avg_val_loss < best_val_loss:
+        best_val_loss = avg_val_loss
+        model.save('customer_care_sbert_model')
+
+    print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {avg_epoch_loss:.4f}, Accuracy: {accuracy:.4f}, '
+          f'Val Loss: {avg_val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')
+
+print("Training complete. Model saved.")
