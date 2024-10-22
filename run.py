@@ -1,36 +1,44 @@
 import subprocess
-import os
 import time
 import webbrowser
 
 def run_flask():
-    # Change directory to the Flask backend and run the Flask app
-    os.chdir('python-backend')  # Adjust the path if necessary
-    subprocess.run(['python', 'app.py'])
+    # Start the Flask app using Waitress in a separate process
+    return subprocess.Popen(['waitress-serve', '--port=8000', 'app:app'], cwd='python-backend')
 
 def run_node():
-    # Change directory to the Node.js backend and run the Node.js server
-    os.chdir('chatbot-backend')  # Adjust the path if necessary
-    subprocess.run(['node', 'server.js'])
+    # Start the Node.js server in a separate process
+    return subprocess.Popen(['node', 'server.js'], cwd='chatbot-backend')
 
 if __name__ == '__main__':
-    # Start Flask app in a separate process
-    flask_process = subprocess.Popen(['python', 'app.py'], cwd='python-backend')
-
-    # Give Flask some time to start
-    time.sleep(2)
-
-    # Start Node.js server in a separate process
-    node_process = subprocess.Popen(['node', 'server.js'], cwd='chatbot-backend')
-
-    # Open the index.html file in the default web browser
-    webbrowser.open('http://localhost:5000/index.html')
-
     try:
+        # Start Flask app with Waitress
+        flask_process = run_flask()
+        print("Starting Flask backend with Waitress...")
+
+        # Give Flask some time to start
+        time.sleep(5)  # Adjust if Waitress takes longer to start
+
+        # Start Node.js server
+        node_process = run_node()
+        print("Starting Node.js backend...")
+
+        # Give Node.js some time to start
+        time.sleep(5)  # Adjust if Node takes longer to start
+
+        # Open the index.html file in the default web browser
+        webbrowser.open('http://127.0.0.1:5000/index.html')  # Adjust URL and port as necessary
+        print("Opening the frontend in the browser...")
+
         # Wait for both processes to complete
         flask_process.wait()
         node_process.wait()
+
     except KeyboardInterrupt:
-        # If interrupted, terminate both processes
+        print("Interrupted! Shutting down both processes...")
+
+    finally:
+        # Terminate both processes
         flask_process.terminate()
         node_process.terminate()
+        print("Processes terminated.")
