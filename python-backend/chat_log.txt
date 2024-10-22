@@ -1,8 +1,0 @@
-2024-10-22 08:39:46 - User Input: hello | Corrected Input: hello | Response: Hello! How can I assist you?
-2024-10-22 09:02:41 - User Input: hello | Corrected Input: hello | Response: Hello! How can I assist you?
-2024-10-22 09:02:43 - User Input: saafe | Corrected Input: safe | Response: Goodbye! Have a great day!
-2024-10-22 09:02:47 - User Input: gthf | Corrected Input: the | Response: Sorry, I didn't understand that. Could you please rephrase?
-2024-10-22 09:03:17 - User Input: hello | Corrected Input: hello | Response: Hello! How can I assist you?
-2024-10-22 09:12:10 - User Input: hello | Corrected Input: hello | Response: Hello! How can I assist you?
-2024-10-22 17:39:49 - User Input: hey | Corrected Input: hey | Response: Hello! How can I assist you?
-2024-10-22 17:39:54 - User Input: hello | Corrected Input: hello | Response: Hello! How can I assist you?

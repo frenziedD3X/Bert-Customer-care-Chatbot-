@@ -1,8 +1,1 @@
-{"level":"info","message":"Server is running on port 5000","timestamp":"2024-10-22T03:42:01.222Z"}
-{"level":"info","message":"Received message: hello","timestamp":"2024-10-22T03:42:10.029Z"}
-{"level":"info","message":"Response from Python backend: {\"corrected_input\":\"hello\",\"response\":\"Hello! How can I assist you?\"}","timestamp":"2024-10-22T03:42:10.138Z"}
-{"level":"info","message":"Server is running on port 5000","timestamp":"2024-10-22T12:09:22.547Z"}
-{"level":"info","message":"Received message: hey","timestamp":"2024-10-22T12:09:49.723Z"}
-{"level":"info","message":"Response from Python backend: {\"corrected_input\":\"hey\",\"response\":\"Hello! How can I assist you?\"}","timestamp":"2024-10-22T12:09:49.922Z"}
-{"level":"info","message":"Received message: hello","timestamp":"2024-10-22T12:09:54.471Z"}
-{"level":"info","message":"Response from Python backend: {\"corrected_input\":\"hello\",\"response\":\"Hello! How can I assist you?\"}","timestamp":"2024-10-22T12:09:54.521Z"}
+
