@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
-from sentence_transformers import SentenceTransformer, util  # Import SBERT
+from sentence_transformers import SentenceTransformer, util
 import json
 import torch
-from textblob import TextBlob  # Import TextBlob for spelling correction
-import datetime  # For timestamping the logs
+from textblob import TextBlob
+import datetime
+from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Load the SBERT model
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
@@ -21,35 +23,30 @@ for intent in intents['intents']:
     patterns = intent['patterns']
     intent_encodings[tag] = model.encode(patterns, convert_to_tensor=True)
 
-# Function to correct spelling mistakes in the user input
 def correct_spelling(user_input):
     blob = TextBlob(user_input)
     corrected_text = str(blob.correct())
     return corrected_text
 
-# Function to predict the tag for a given input sentence using SBERT
 def predict_tag(sentence, threshold=0.5):
     sentence_embedding = model.encode(sentence, convert_to_tensor=True)
     
     max_similarity = -1
     predicted_tag = None
 
-    # Compare the input sentence with all intent patterns
     for tag, encodings in intent_encodings.items():
         cosine_scores = util.pytorch_cos_sim(sentence_embedding, encodings)
-        max_score = torch.max(cosine_scores).item()  # Get the highest similarity score
+        max_score = torch.max(cosine_scores).item()
         
         if max_score > max_similarity:
             max_similarity = max_score
             predicted_tag = tag
 
-    # Check if the max similarity is below the threshold
     if max_similarity < threshold:
-        return "unknown"  # Return unknown tag if the score is below the threshold
+        return "unknown"
 
     return predicted_tag
 
-# Function to get the response for the predicted tag
 def get_response(predicted_tag):
     if predicted_tag == "unknown":
         return ["Sorry, I didn't understand that. Could you please rephrase?"]
@@ -59,7 +56,6 @@ def get_response(predicted_tag):
             return intent['responses']
     return ["Sorry, I don't understand that."]
 
-# Function to log the chat conversation
 def log_chat(user_input, corrected_input, response):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log_entry = f"{timestamp} - User Input: {user_input} | Corrected Input: {corrected_input} | Response: {response}\n"
@@ -67,21 +63,21 @@ def log_chat(user_input, corrected_input, response):
     with open('chat_log.txt', 'a') as log_file:
         log_file.write(log_entry)
 
-@app.route('/chat', methods=['POST'])
+@app.route('/')
+def home():
+    return "Chatbot is running."
+
+@app.route('/api/chat', methods=['POST'])  # Changed route to /api/chat
 def chat():
     try:
         user_input = request.json.get('message', '')
         if not user_input:
             return jsonify(response="Please provide a valid input."), 400
 
-        # Correct spelling mistakes in the user input
         corrected_input = correct_spelling(user_input)
-
-        # Predict the tag and get the response
         predicted_tag = predict_tag(corrected_input)
         response = get_response(predicted_tag)
 
-        # Log the chat
         log_chat(user_input, corrected_input, response[0])
 
         return jsonify(response=response[0], corrected_input=corrected_input)
