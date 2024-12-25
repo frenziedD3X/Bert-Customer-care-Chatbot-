@@ -1,6 +1,6 @@
 # Customer Care Chatbot
 
-Welcome to the Customer Care Chatbot project! This chatbot is designed to assist users by answering queries related to UpToSkills. It leverages a combination of Python, Flask, Node.js, and a DistilBERT model for natural language processing.
+Welcome to the Customer Care Chatbot project! This chatbot is designed to assist users by answering queries related to UpToSkills. It leverages a combination of Python, Flask, Node.js, and a SBERT model Sentence similiarity.
 
 ## Table of Contents
 
